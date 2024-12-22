@@ -12,7 +12,7 @@ endo.test(
   intercept = TRUE,
   invalid = FALSE,
   method = c("Fast.DeLasso", "DeLasso", "OLS"),
-  voting = c("MaxClique", "MP"),
+  voting = c("MP", "MaxClique"),
   alpha = 0.05,
   tuning.1st = NULL,
   tuning.2nd = NULL
@@ -33,7 +33,7 @@ endo.test(
 
 \item{method}{The method used to estimate the reduced form parameters. \code{"OLS"} stands for ordinary least squares, \code{"DeLasso"} stands for the debiased Lasso estimator, and \code{"Fast.DeLasso"} stands for the debiased Lasso estimator with fast algorithm. (default = \code{"Fast.DeLasso"})}
 
-\item{voting}{The voting option used to estimate valid IVs. \code{'MP'} stnads for majority and plurality voting, \code{'MaxClique'} stands for maximum clique in the IV voting matrix. (default = \code{'MaxClique'})}
+\item{voting}{The voting option used to estimate valid IVs. \code{'MP'} stnads for majority and plurality voting, \code{'MaxClique'} stands for maximum clique in the IV voting matrix. (default = \code{'MP'})}
 
 \item{alpha}{The significance level for the confidence interval. (default = \code{0.05})}
 
@@ -58,7 +58,7 @@ As for tuning parameter in the 1st stage and 2nd stage, if do not specify, for m
 we adopt \eqn{\max{(\sqrt{2.01 \log p_z}, \sqrt{\log n})}} for both tuning parameters.
 }
 \examples{
-\dontrun{
+
 n = 500; L = 11; s = 3; k = 10; px = 10;
 alpha = c(rep(3,s),rep(0,L-s)); beta = 1; gamma = c(rep(1,k),rep(0,L-k))
 phi<-(1/px)*seq(1,px)+0.5; psi<-(1/px)*seq(1,px)+1
@@ -68,9 +68,9 @@ X = matrix(rnorm(n*px),n,px)
 epsilon = MASS::mvrnorm(n,rep(0,2),epsilonSigma)
 D =  0.5 + Z \%*\% gamma + X \%*\% psi + epsilon[,1]
 Y = -0.5 + Z \%*\% alpha + D * beta + X \%*\% phi + epsilon[,2]
-endo.test.model <- endo.test(Y,D,Z,X)
+endo.test.model <- endo.test(Y,D,Z,X,invalid = TRUE)
 summary(endo.test.model)
-}
+
 
 }
 \references{
